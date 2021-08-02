@@ -1,0 +1,13 @@
+const path = require('path');
+const HtmlWenpackPlugin = require(''html)
+module.exports = {
+    entry: './src/index.js',
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist')
+    },
+    mode: 'development',
+    devServer: {
+        publicPath: '/dist',
+    }
+}
