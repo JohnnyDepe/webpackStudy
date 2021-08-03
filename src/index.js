@@ -1,38 +1,43 @@
 import addContent from './add-content.js';
 import _ from 'lodash';
 import './style.css';
-import Icon from './icon.png';
-import Data from './data.xml';
-import Notes from './data.csv';
-import toml from './data.toml';
-import yaml from './data.yaml';
-import json from './data.json5';
+import printMe from './print.js';
+import {cube} from './math.js';
 
-document.write("my first webpackapp<br />");
 addContent();
 
 
-console.log(toml.title); // output `TOML Example`
-console.log(toml.owner.name); // output `Tom Preston-Werner`
-
-console.log(yaml.title); // output `YAML Example`
-console.log(yaml.owner.name); // output `Tom Preston-Werner`
-
-console.log(json.title); // output `JSON5 Example`
-console.log(json.owner.name); // output `Tom Preston-Werner`
-
 function component (){
-    const ele = document.createElement('div');
-    ele.classList.add('hello');
-    ele.innerText= "hello world!";
-    const myIcon = new Image();
-    myIcon.src = Icon;
-    ele.appendChild(myIcon);
+    const element = document.createElement('pre');
+    const btn = document.createElement('button');
 
-    console.log(Data);
-    console.log(Notes);
+    element.classList.add("hello");
 
-    return ele;
+    element.innerHTML = [
+        'Hello webpack!',
+        '5 cubed is equal to ' + cube(5)
+    ].join('\n\n');
+
+    btn.innerText = "点击这里然后查看console";
+    btn.onclick = printMe;
+
+    element.appendChild(btn);
+
+    return element;
 }
-document.body.appendChild(component());
+// document.body.appendChild(component());
+let ele = component();
+document.body.appendChild(ele);
+
 console.log(__dirname);
+
+// if(module.hot){
+//     console.log(222)
+//     module.hot.accept('./print.js', () => {
+//         console.log("Accepting the updated printMe module!");
+//         // printMe();
+//         document.body.removeChild(ele);
+//         ele = component();
+//         document.body.appendChild(ele);
+//     });
+// }

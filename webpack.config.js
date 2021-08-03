@@ -1,64 +1,47 @@
 const path = require('path');
 const HtmlWenpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const webpack = require('webpack');
+
 module.exports = {
-    entry: './src/index.js',
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
-    },
+    // entry: './src/index.js',
     mode: 'development',
-    plugins: [
-        new HtmlWenpackPlugin({
-            title: 'Development'
-        })
-    ],
-    // devtool: 'inline-souce-map',
-    devServer: {
-        publicPath: '/dist',
+    entry: {
+        app: './src/index.js',
+        // print: './src/print.js'
     },
+
+    devtool: 'inline-source-map',
+
+    output: {
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+        publicPath: '/'
+    },
+    
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HtmlWenpackPlugin({
+            title: '管理输出'
+        }),
+        new webpack.HotModuleReplacementPlugin()
+    ],
+    
+    devServer: {
+        contentBase: '/dist',
+        hot: true
+    },
+
+    optimization: {
+        usedExports: true
+    }
+
     module: {
         rules:[
             {
                 test: /\.css$/i,
                 use: ['style-loader', 'css-loader']
             },
-            {
-                test: /\.(png|jpg|jpeg|svg|gif)$/i,
-                type: 'asset/resource'
-            },
-            {
-                test: /\.(woff|woff2|ttf|eot|ttf|otf)$/i,
-                type: 'asset/resource'
-            },
-            {
-                test: /\.(csv|tsv)$/i,
-                use: ['csv-loader']
-            },
-            {
-                test: /\.xml$/i,
-                use: ['xml-loader'],
-            },
-            {
-                test: /\.toml$/i,
-                type: 'json',
-                parser: {
-                    parse: toml.parse,
-                },
-            },
-            {
-                test: /\.yaml$/i,
-                type: 'json',
-                parser: {
-                    parse: yaml.parse,
-                },
-            },
-            {
-                test: /\.json5$/i,
-                type: 'json',
-                parser: {
-                    parse: json5.parse,
-                },
-            }
         ]
     }
 }
