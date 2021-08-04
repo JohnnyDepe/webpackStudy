@@ -5,10 +5,11 @@ const webpack = require('webpack');
 
 module.exports = {
     // entry: './src/index.js',
-    mode: 'development',
+    mode: 'production',
     entry: {
         app: './src/index.js',
         // print: './src/print.js'
+        another: './src/another-module.js'
     },
 
     devtool: 'inline-source-map',
@@ -33,7 +34,10 @@ module.exports = {
     },
 
     optimization: {
-        usedExports: true
+        usedExports: true,
+        splitChunks: {
+            chunks: 'all'
+        }
     }
 
     module: {
@@ -41,7 +45,7 @@ module.exports = {
             {
                 test: /\.css$/i,
                 use: ['style-loader', 'css-loader']
-            },
+            }
         ]
     }
 }
